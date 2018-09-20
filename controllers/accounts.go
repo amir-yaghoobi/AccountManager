@@ -40,7 +40,7 @@ func CreateNewAccount(c *gin.Context) {
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
-		postgresErrorHandler(err, c)
+		postgresErrorHandler(c, err)
 		return
 	}
 

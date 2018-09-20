@@ -10,7 +10,7 @@ import (
 const internalServerError = "An internal server error happened, please try again!"
 
 
-func getUserFromContext(c *gin.Context) (user *models.User, aborted bool) {
+func getUserFromContext(c *gin.Context) (user *models.User, isAborted bool) {
 	userInterface, exist := c.Get("USER")
 	if !exist {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -33,15 +33,6 @@ func getUserFromContext(c *gin.Context) (user *models.User, aborted bool) {
 }
 
 
-func getAccountFromUser(user *models.User, accountId uint) *models.Account {
-	accounts := user.Accounts
-	for _, account := range accounts {
-		if account.ID == accountId {
-			return &account
-		}
-	}
-	return nil
-}
 
 func NotImplementedYet(c *gin.Context) {
 	c.JSON(200, gin.H{
@@ -49,9 +40,11 @@ func NotImplementedYet(c *gin.Context) {
 	})
 }
 
-func postgresErrorHandler(error error, c *gin.Context) {
-	log.Errorf("cannot connect to postgres databases, error: %s\n", error.Error())
-	c.JSON(http.StatusInternalServerError, gin.H{
-		"error": internalServerError,
-	})
+func postgresErrorHandler(c *gin.Context, error error) {
+	if error != nil {
+		log.Errorf("cannot connect to postgres databases, error: %s\n", error.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": internalServerError,
+		})
+	}
 }

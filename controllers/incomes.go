@@ -58,7 +58,7 @@ func AddIncome(c *gin.Context) {
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
-		postgresErrorHandler(err, c)
+		postgresErrorHandler(c, err)
 		return
 	}
 
@@ -150,7 +150,7 @@ func AddCategory(c *gin.Context) {
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
-		postgresErrorHandler(err, c)
+		postgresErrorHandler(c, err)
 		return
 	}
 
@@ -259,7 +259,7 @@ func GetAccountCategories(c *gin.Context) {
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
-		postgresErrorHandler(err, c)
+		postgresErrorHandler(c, err)
 		return
 	}
 
