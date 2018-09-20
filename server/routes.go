@@ -1,45 +1,17 @@
 package main
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/gin-gonic/gin"
-	"time"
-	"github.com/amir-yaghoobi/accountManager/db"
-	"github.com/amir-yaghoobi/accountManager/models"
 	"github.com/amir-yaghoobi/accountManager/controllers"
 	"github.com/amir-yaghoobi/accountManager/middlewares"
 )
 
-func apiStatusController(c *gin.Context) {
-	db, err := db.GetPostgres()
-	if err != nil {
-		log.Errorf("cannot connect to postgres!, error: %s\n", err.Error())
-	}
-
-	var usersCount uint
-	db.Model(&models.User{}).Count(&usersCount)
-
-	var accountsCount uint
-	db.Model(&models.Account{}).Count(&accountsCount)
-
-	uptime := time.Now()
-	duration := uptime.Sub(serverStartedAt)
-	response := map[string]interface{}{
-		"uptime":   duration.Seconds(),
-		"health":   "OK",
-		"users":    usersCount,
-		"accounts": accountsCount,
-	}
-	c.JSON(200, response)
-}
 
 func getApiRoutes() (router *gin.Engine) {
 	router = gin.Default()
 
-	router.GET("/", apiStatusController)
-
 	authMiddleWare := middlewares.SetupJWT()
-	router.POST("/auth",                                 authMiddleWare.LoginHandler)
+	router.POST("/auth",                                  authMiddleWare.LoginHandler)
 
 	userGroup := router.Group("/user")
 	userGroup.POST("/register",                           controllers.Register)
