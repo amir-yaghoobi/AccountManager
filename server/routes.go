@@ -42,19 +42,19 @@ func getApiRoutes() (router *gin.Engine) {
 	router.POST("/auth",                                 authMiddleWare.LoginHandler)
 
 	userGroup := router.Group("/user")
-	userGroup.POST("/register",                          controllers.Register)
+	userGroup.POST("/register",                           controllers.Register)
 	{
 		userGroup.Use(authMiddleWare.MiddlewareFunc())
-		userGroup.GET("/:userId",                        controllers.GetUser)
+		userGroup.GET("/:userId",                         controllers.GetUser)
 	}
 
 	accountGroup := router.Group("/account")
 	{
 		accountGroup.Use(authMiddleWare.MiddlewareFunc())
-		accountGroup.GET("/",                            controllers.NotImplementedYet)
-		accountGroup.POST("/",                           controllers.CreateNewAccount )
-		accountGroup.POST("/inviteUser",                 controllers.NotImplementedYet)
-		accountGroup.DELETE("/:accountId",               controllers.NotImplementedYet)
+		accountGroup.GET("/",                             controllers.NotImplementedYet)
+		accountGroup.POST("/",                            controllers.CreateNewAccount )
+		accountGroup.POST("/inviteUser",                  controllers.NotImplementedYet)
+		accountGroup.DELETE("/:accountId",                controllers.NotImplementedYet)
 	}
 
 	incomeGroup := router.Group("/income")
