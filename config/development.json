@@ -1,0 +1,13 @@
+{
+  "secretKey": "Sup3R_-_s3crEt",
+  "port": 8080,
+  "devMode": true,
+  "postgresDB": {
+    "host": "localhost",
+    "port": "5433",
+    "db": "accountManager",
+    "user": "postgres",
+    "password": "password",
+    "sslmode": "disable"
+  }
+}
