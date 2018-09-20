@@ -91,13 +91,13 @@ func main() {
 	initLogger()
 	if err := config.Initialize(); err != nil {
 		log.Fatalf("cannot load configs, error=%s", err.Error())
-		os.Exit(-1)
+		return
 	}
 
 	conn, err := db.GetPostgres()
 	if err != nil {
 		log.Fatalf("cannot connect to postgres database, error: %v\n", err.Error())
-		os.Exit(-1)
+		return
 	}
 	defer conn.Close()
 	log.Info("connected to postgres database")

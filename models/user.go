@@ -35,3 +35,12 @@ func (user *User) CheckPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword(hashBytes, passwordBytes)
 	return err == nil
 }
+
+func (user *User) GetAccount(accountId uint) *Account {
+	for _, account := range user.Accounts {
+		if account.ID == accountId {
+			return &account
+		}
+	}
+	return nil
+}

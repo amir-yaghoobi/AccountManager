@@ -15,6 +15,28 @@ type CreateAccountRequest struct {
 	Description  string   `json:"description" binding:"required"`
 }
 
+
+func abortOnInvalidAccount(c *gin.Context, accountId uint) (user *models.User, isAborted bool) {
+	user, aborted := getUserFromContext(c)
+	if aborted {
+		return nil, true
+	}
+
+	account := user.GetAccount(uint(accountId))
+	if account == nil {
+		log.Warnf("userID:%d attempts to add income to accountId:%d," +
+			" but account does not belongs to him",
+			user.ID, accountId)
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status": http.StatusUnauthorized,
+			"error": "Account not found",
+		})
+		return nil, true
+	}
+	return user, false
+}
+
+
 /*
 	@params
 		* name: string

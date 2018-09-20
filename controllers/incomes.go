@@ -39,22 +39,11 @@ func AddIncome(c *gin.Context) {
 		return
 	}
 
-	user, aborted := getUserFromContext(c)
+	user, aborted := abortOnInvalidAccount(c, newIncomeRequest.AccountId)
 	if aborted {
 		return
 	}
 
-	account := getAccountFromUser(user, newIncomeRequest.AccountId)
-	if account == nil {
-		log.Warnf("userID:%d attempts to add income to accountId:%d," +
-			" but account does not belongs to him",
-			user.ID, newIncomeRequest.AccountId)
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": http.StatusUnauthorized,
-			"error": "Account not found",
-		})
-		return
-	}
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
@@ -87,7 +76,7 @@ func AddIncome(c *gin.Context) {
 	income := models.Income{
 		UserID:           user.ID,
 		Amount:           newIncomeRequest.Amount,
-		AccountID:        account.ID,
+		AccountID:        newIncomeRequest.AccountId,
 		IncomeCategoryID: category.ID,
 	}
 
@@ -131,20 +120,8 @@ func AddCategory(c *gin.Context) {
 		return
 	}
 
-	user, aborted := getUserFromContext(c)
+	_, aborted := abortOnInvalidAccount(c, uint(accountId))
 	if aborted {
-		return
-	}
-
-	account := getAccountFromUser(user, uint(accountId))
-	if account == nil {
-		log.Warnf("userID:%d attempts to add income to accountId:%d," +
-			" but account does not belongs to him",
-			user.ID, accountId)
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status": http.StatusUnauthorized,
-			"error": "Account not found",
-		})
 		return
 	}
 
@@ -198,8 +175,6 @@ func AddCategory(c *gin.Context) {
 		return
 	}
 
-	category.Account = *account
-
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
 		"category": category,
@@ -240,20 +215,9 @@ func GetAccountCategories(c *gin.Context) {
 			return
 		}
 	}
-	user, aborted := getUserFromContext(c)
-	if aborted {
-		return
-	}
 
-	account := getAccountFromUser(user, uint(accountId))
-	if account == nil {
-		log.Warnf("userID:%d attempts to get categories from accountId:%d," +
-			" but account does not belongs to him",
-			user.ID, accountId)
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": http.StatusNotFound,
-			"categories": []models.IncomeCategory{},
-		})
+	_, aborted := abortOnInvalidAccount(c, uint(accountId))
+	if aborted {
 		return
 	}
 
