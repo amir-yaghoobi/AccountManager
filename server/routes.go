@@ -32,8 +32,8 @@ func getApiRoutes() (router *gin.Engine) {
 	incomeGroup := router.Group("/income")
 	{
 		incomeGroup.Use(authMiddleWare.MiddlewareFunc())
-		incomeGroup.POST("/",                             controllers.AddIncome        )
-		incomeGroup.GET("/:accountId",                    controllers.NotImplementedYet)
+		incomeGroup.POST("/",                             controllers.AddIncome           )
+		incomeGroup.GET("/:accountId",                    controllers.NotImplementedYet   )
 		incomeGroup.GET("/:accountId/category",           controllers.GetAccountCategories)
 		incomeGroup.GET("/:accountId/category/:cId",      controllers.GetAccountCategories)
 		incomeGroup.POST("/:accountId/category",          controllers.AddCategory         )
@@ -42,8 +42,8 @@ func getApiRoutes() (router *gin.Engine) {
 	expenseGroup := router.Group("/expense")
 	{
 		expenseGroup.Use(authMiddleWare.MiddlewareFunc())
-		expenseGroup.POST("/",                            controllers.NotImplementedYet)
-		expenseGroup.GET("/:accountId",                   controllers.NotImplementedYet)
+		expenseGroup.POST("/",                            controllers.AddExpense          )
+		expenseGroup.GET("/:accountId",                   controllers.NotImplementedYet   )
 		expenseGroup.GET("/:accountId/category",          controllers.GetAccountCategories)
 		expenseGroup.GET("/:accountId/category/:cId",     controllers.GetAccountCategories)
 		expenseGroup.POST("/:accountId/category",         controllers.AddCategory         )
