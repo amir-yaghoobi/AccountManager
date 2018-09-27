@@ -87,6 +87,18 @@ func CreateNewAccount(c *gin.Context) {
 }
 
 
+ // return list of accounts that related to this user
+func GetUserAccounts(c *gin.Context) {
+	user, aborted := getUserFromContext(c)
+	if aborted {
+		return
+	}
+
+	accounts := user.Accounts
+	c.JSON(http.StatusOK, accounts)
+}
+
+
 func RemoveAccount(c *gin.Context) {
 	// TODO remove all expense and incomes from account
 	c.JSON(200, gin.H{
