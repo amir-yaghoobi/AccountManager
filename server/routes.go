@@ -23,7 +23,8 @@ func getApiRoutes() (router *gin.Engine) {
 	accountGroup := router.Group("/account")
 	{
 		accountGroup.Use(authMiddleWare.MiddlewareFunc())
-		accountGroup.GET("/",															controllers.GetUserAccounts)
+		accountGroup.GET("/",															controllers.GetUserAccounts  )
+		accountGroup.GET("/dashboard/:accountId",         controllers.DashboardStats   )
 		accountGroup.POST("/",															controllers.CreateNewAccount )
 		accountGroup.POST("/inviteUser",										controllers.NotImplementedYet)
 		accountGroup.DELETE("/:accountId",									controllers.NotImplementedYet)
