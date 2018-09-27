@@ -132,7 +132,7 @@ func GetIncomes(c *gin.Context) {
 		}
 	}
 
-	limit := parseUintWithDefault(c.Query("limit"), 25)
+	limit  := parseUintWithDefault(c.Query("limit"), 25)
 	offset := parseUintWithDefault(c.Query("offset"), 0)
 
 	var expenses []models.Income
