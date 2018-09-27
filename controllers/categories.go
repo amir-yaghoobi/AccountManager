@@ -36,7 +36,7 @@ func AddCategory(c *gin.Context) {
 		log.Warnf("invalid accountId, error: %s\n", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": http.StatusBadRequest,
-			"error": "AccountId must be an integer!",
+			"error": invalidAccountId,
 		})
 		return
 	}
@@ -178,7 +178,7 @@ func GetAccountCategories(c *gin.Context) {
 		log.Warnf("invalid accountId, error: %s\n", err)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": http.StatusBadRequest,
-			"error": "AccountId must be an integer!",
+			"error": invalidAccountId,
 		})
 		return
 	}

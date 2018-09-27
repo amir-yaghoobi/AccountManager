@@ -8,7 +8,7 @@ import (
 )
 
 const internalServerError = "An internal server error happened, please try again!"
-
+const invalidAccountId    = "AccountId must be an integer!"
 
 func getUserFromContext(c *gin.Context) (user *models.User, isAborted bool) {
 	userInterface, exist := c.Get("USER")
