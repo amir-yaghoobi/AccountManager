@@ -33,7 +33,7 @@ func getApiRoutes() (router *gin.Engine) {
 	{
 		incomeGroup.Use(authMiddleWare.MiddlewareFunc())
 		incomeGroup.POST("/",															controllers.AddIncome           )
-		incomeGroup.GET("/:accountId",											controllers.NotImplementedYet   )
+		incomeGroup.GET("/:accountId",											controllers.GetIncomes          )
 		incomeGroup.GET("/:accountId/category",						controllers.GetAccountCategories)
 		incomeGroup.GET("/:accountId/category/:cId",				controllers.GetAccountCategories)
 		incomeGroup.POST("/:accountId/category",						controllers.AddCategory         )
