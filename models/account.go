@@ -10,5 +10,5 @@ type Account struct {
 	Name        string
 	Description string
 	Icon        string
-	Users       []*User `gorm:"many2many:user_accounts;"`
+	Users       []*User `gorm:"many2many:user_accounts;" json:"-"`
 }
