@@ -88,8 +88,8 @@ func UserAuthorization(data interface{},c *gin.Context) bool {
 
 func LoginResponseHandler(context *gin.Context, status int, token string, expire time.Time) {
 	context.JSON(status, gin.H{
-		"status": status,
-		"token": token,
+		"status":   status,
+		"token":    token,
 		"expireAt": expire,
 	})
 }
@@ -97,16 +97,16 @@ func LoginResponseHandler(context *gin.Context, status int, token string, expire
 func SetupJWT() *jwt.GinJWTMiddleware {
 	cfg := config.GetConfig()
 	return &jwt.GinJWTMiddleware{
-		Realm:           "development",
+		Realm:            "development",
 		SigningAlgorithm: "HS256",
-		Key:             []byte(cfg.SecretKey),
-		Timeout:         time.Hour * 24,
-		MaxRefresh:      time.Hour * 48,
-		IdentityHandler: UserIdentityHandler,
-		PayloadFunc: UserPayloadBuilder,
-		Authenticator: UserAuthentication,
-		Authorizator: UserAuthorization,
-		LoginResponse: LoginResponseHandler,
+		Key:              []byte(cfg.SecretKey),
+		Timeout:          time.Hour * 24,
+		MaxRefresh:       time.Hour * 48,
+		IdentityHandler:  UserIdentityHandler,
+		PayloadFunc:      UserPayloadBuilder,
+		Authenticator:    UserAuthentication,
+		Authorizator:     UserAuthorization,
+		LoginResponse:    LoginResponseHandler,
 		HTTPStatusMessageFunc: func(e error, c *gin.Context) string {
 			return e.Error()
 		},
