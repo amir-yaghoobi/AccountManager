@@ -8,11 +8,11 @@ import (
 
 type User struct {
 	gorm.Model
-	FirstName string	 `json:"firstname"`
-	LastName string		 `json:"lastname"`
+	FirstName string     `json:"firstname"`
+	LastName string      `json:"lastname"`
 	Username string      `gorm:"type:varchar(100);unique_index" json:"username"`
 	Password string      `gorm:"not null;" json:"password"`
-	Avatar string		 `json:"avatar"`
+	Avatar string        `json:"avatar"`
 	Accounts []Account   `gorm:"many2many:user_accounts;" json:"accounts"`
 	LastAccess time.Time `json:"last_access"`
 	LastIp string        `json:"last_ip"`

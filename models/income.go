@@ -37,7 +37,7 @@ func MustValuableIncome(incomes []Income) uint {
 	for key, value := range categories {
 		if value > maxValue {
 			maxValue = value
-			maxKey = key
+			maxKey   = key
 		}
 	}
 	return maxKey

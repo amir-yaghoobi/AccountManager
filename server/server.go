@@ -17,7 +17,6 @@ func initLogger() {
 	log.SetLevel(log.DebugLevel)
 }
 
-
 func main() {
 	initLogger()
 	if err := config.Initialize(); err != nil {

@@ -1,15 +1,15 @@
 package controllers
 
 import (
-	log "github.com/sirupsen/logrus"
-	"github.com/gin-gonic/gin"
-	"github.com/amir-yaghoobi/accountManager/db"
+	"time"
 	"strconv"
-	"github.com/amir-yaghoobi/accountManager/models"
-	"github.com/gin-gonic/gin/binding"
 	"net/http"
 	"github.com/jinzhu/gorm"
-	"time"
+	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/amir-yaghoobi/accountManager/db"
+	"github.com/amir-yaghoobi/accountManager/models"
 )
 
 // -------------- request struct ----------------

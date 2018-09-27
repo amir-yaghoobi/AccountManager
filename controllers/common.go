@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"strconv"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/amir-yaghoobi/accountManager/models"
-	"strconv"
 )
 
 const internalServerError = "An internal server error happened, please try again!"
