@@ -9,6 +9,6 @@ type Expense struct {
 	AccountID uint                      `json:"-"`
 	User User                           `json:"-"`
 	UserID uint                         `json:"-"`
-	ExpenseCategory ExpenseCategory
+	ExpenseCategory ExpenseCategory     `json:"-"`
 	ExpenseCategoryID uint
 }
