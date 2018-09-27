@@ -86,7 +86,15 @@ func AddExpense(c *gin.Context) {
 	})
 }
 
-
+// param accountId
+//
+// options:
+//   catId integer
+//   limit integer default 25
+//   offset integer default 0
+//
+// example:
+//  ?catId=4&limit=25&offset=0
 func GetExpenses(c *gin.Context) {
 	accountIdString := c.Param("accountId")
 	accountId, err := strconv.ParseUint(accountIdString, 10, 64)
