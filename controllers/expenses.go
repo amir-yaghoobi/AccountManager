@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/amir-yaghoobi/accountManager/db"
 	"github.com/amir-yaghoobi/accountManager/models"
+	"strconv"
 )
 
 type AddExpenseRequest  struct {
@@ -33,7 +34,6 @@ func AddExpense(c *gin.Context) {
 	if aborted {
 		return
 	}
-
 
 	pConn, err := db.GetPostgres()
 	if err != nil {
@@ -84,4 +84,68 @@ func AddExpense(c *gin.Context) {
 		"status": http.StatusOK,
 		"expense": expense,
 	})
+}
+
+
+func GetExpenses(c *gin.Context) {
+	accountIdString := c.Param("accountId")
+	accountId, err := strconv.ParseUint(accountIdString, 10, 64)
+	if err != nil {
+		log.Warnf("invalid accountId, error: %s\n", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"error": invalidAccountId,
+		})
+		return
+	}
+
+	_, aborted := abortOnInvalidAccount(c, uint(accountId))
+	if aborted {
+		return
+	}
+
+	pConn, err := db.GetPostgres()
+	if err != nil {
+		postgresErrorHandler(c, err)
+		return
+	}
+
+	where := models.Expense{AccountID: uint(accountId)}
+
+	catIdString := c.Query("catId")
+	if len(catIdString) > 0 {
+		if catId, err := strconv.ParseUint(catIdString, 10, 64); err == nil {
+			where.ExpenseCategoryID = uint(catId)
+		} else {
+			log.Warnf("invalid categoryId:%s query proceed without categoryId, error:%s", catId, err.Error())
+		}
+	}
+
+	limitStr := c.Query("limit")
+	limit := uint64(25)
+	if len(limitStr) > 0 {
+		if l, err := strconv.ParseUint(limitStr, 10, 64); err == nil {
+			limit = l
+		}
+	}
+
+	offsetStr := c.Query("offset")
+	offset := uint64(0)
+	if len(offsetStr) > 0 {
+		if o, err := strconv.ParseUint(offsetStr, 10, 64); err == nil {
+			offset = o
+		}
+	}
+
+	var expenses []models.Expense
+	q := pConn.Where(&where).Limit(limit).Offset(offset).Find(&expenses)
+	if q.Error != nil && q.Error != gorm.ErrRecordNotFound {
+		log.Errorf("cannot get expenses from postgres, error:%s", q.Error.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": http.StatusInternalServerError,
+			"error": internalServerError,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, expenses)
 }

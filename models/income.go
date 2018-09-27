@@ -9,6 +9,6 @@ type Income struct {
 	AccountID uint                      `json:"-"`
 	User User                           `json:"-"`
 	UserID uint                         `json:"-"`
-	IncomeCategory IncomeCategory
+	IncomeCategory IncomeCategory       `json:"-"`
 	IncomeCategoryID uint
 }
