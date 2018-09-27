@@ -132,21 +132,8 @@ func GetIncomes(c *gin.Context) {
 		}
 	}
 
-	limitStr := c.Query("limit")
-	limit := uint64(25)
-	if len(limitStr) > 0 {
-		if l, err := strconv.ParseUint(limitStr, 10, 64); err == nil {
-			limit = l
-		}
-	}
-
-	offsetStr := c.Query("offset")
-	offset := uint64(0)
-	if len(offsetStr) > 0 {
-		if o, err := strconv.ParseUint(offsetStr, 10, 64); err == nil {
-			offset = o
-		}
-	}
+	limit := parseUintWithDefault(c.Query("limit"), 25)
+	offset := parseUintWithDefault(c.Query("offset"), 0)
 
 	var expenses []models.Income
 	q := pConn.Where(&where).Limit(limit).Offset(offset).Find(&expenses)

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/amir-yaghoobi/accountManager/models"
+	"strconv"
 )
 
 const internalServerError = "An internal server error happened, please try again!"
@@ -32,6 +33,13 @@ func getUserFromContext(c *gin.Context) (user *models.User, isAborted bool) {
 	return user, false
 }
 
+
+func parseUintWithDefault(value string, defaultValue uint64) uint64 {
+	if v, err := strconv.ParseUint(value, 10, 64); err == nil {
+		return v
+	}
+	return defaultValue
+}
 
 
 func NotImplementedYet(c *gin.Context) {
