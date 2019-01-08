@@ -38,6 +38,8 @@ func main() {
 	cfg := config.GetConfig()
 
 	router := getApiRoutes()
+
+
 	err = router.Run(fmt.Sprintf(":%d", cfg.Port))
 	if err != nil {
 		log.Fatalf("cannot start API server. error: %s\n", err)

@@ -4,10 +4,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/amir-yaghoobi/accountManager/controllers"
 	"github.com/amir-yaghoobi/accountManager/middlewares"
+	"github.com/gin-contrib/cors"
 )
 
 func getApiRoutes() (router *gin.Engine) {
 	router = gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*", "http://localhost:3000"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET"},
+		AllowHeaders:     []string{"Origin", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	authMiddleWare := middlewares.SetupJWT()
 	router.POST("/auth", authMiddleWare.LoginHandler)
@@ -55,7 +63,7 @@ func getApiRoutes() (router *gin.Engine) {
 		budgetGroup.POST("/", controllers.NotImplementedYet)
 		budgetGroup.GET("/:accountId", controllers.NotImplementedYet)
 		budgetGroup.PUT("/:accountId/:budgetId", controllers.NotImplementedYet)
-		budgetGroup.DELETE("/:accountId/:budgetId", controllers.NotImplementedYet)
+		budgetGroup.DELETE( "/:accountId/:budgetId", controllers.NotImplementedYet)
 	}
 
 	return router
